@@ -41,7 +41,8 @@ $(document).ready(function() {
             dataType: 'text',
             success: function(response) {
                 console.log('API Response:', response);
-                addMessageToChatLog(body, response);
+                const botResponse = response;
+                addMessageToChatLog(body, botResponse);
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
