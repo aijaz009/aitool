@@ -38,32 +38,4 @@ function sendMessage(message) {
         headers: headers,
         body: JSON.stringify(data)
     })
-    .then((response) => response.json())
-    .then((data) => {
-        if (data.messages && data.messages[0] && data.messages[0].content) {
-            const botResponse = data.messages[0].content;
-            addMessageToChatLog(message, botResponse);
-        } else {
-            console.error('Invalid response format:', data);
-            addMessageToChatLog(message, 'Error: Invalid response format');
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        addMessageToChatLog(message, 'Error: ' + error.message);
-    });
-}
-
-function addMessageToChatLog(userMessage, botResponse) {
-    const userLi = document.createElement('li');
-    userLi.classList.add('user');
-    userLi.textContent = `You: ${userMessage}`;
-    chatLog.appendChild(userLi);
-
-    const botLi = document.createElement('li');
-    botLi.classList.add('bot');
-    botLi.textContent = `Bot: ${botResponse}`;
-    chatLog.appendChild(botLi);
-
-    chatLog.scrollTop = chatLog.scrollHeight;
-}
+    .then((response
