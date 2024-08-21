@@ -2,19 +2,12 @@ body {
     font-family: Arial, sans-serif;
 }
 
-#chat-bot {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 #chat-log {
     list-style: none;
     padding: 0;
     margin: 0;
+    overflow-y: auto;
+    max-height: 300px;
 }
 
 #chat-log li {
@@ -32,11 +25,7 @@ body {
     background-color: #fff;
 }
 
-#message-form {
-    margin-top: 20px;
-}
-
-#message-input {
+#body-input {
     width: 70%;
     padding: 10px;
     font-size: 16px;
