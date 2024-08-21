@@ -2,7 +2,7 @@ $(document).ready(function() {
     $('#chat-form').on('submit', function(event) {
         event.preventDefault();
 
-        const message = $('#message').val();
+        const message = $('#message').val().trim();
         if (!message) {
             alert('Please enter a message.');
             return;
@@ -11,11 +11,11 @@ $(document).ready(function() {
         const settings = {
             async: true,
             crossDomain: true,
-            url: 'https://chatgpt-42.p.rapidapi.com/conversationgpt4-2',
+            url: 'https://chatgpt-42.p.rapidapi.com/conversationgpt4-2', // Ensure this URL is correct
             method: 'POST',
             headers: {
-                'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
-                'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
+                'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO', // Ensure API key is correct
+                'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com', // Ensure this matches the API host
                 'Content-Type': 'application/json'
             },
             processData: false,
@@ -30,12 +30,11 @@ $(document).ready(function() {
             })
         };
 
-        console.log('Sending request:', settings);
+        console.log('Sending request with settings:', settings);
 
         $.ajax(settings)
             .done(function(response) {
                 console.log('API Response:', response);
-                // Adjust based on the actual API response structure
                 if (response && response.choices && response.choices.length > 0) {
                     $('#response-text').text(response.choices[0].message.content);
                 } else {
