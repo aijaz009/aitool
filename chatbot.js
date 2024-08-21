@@ -29,7 +29,7 @@ const sendMessage = async () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'gpt-4o',
+            model: 'gpt-4o', // Model name as per your requirement
             messages: [
                 {
                     role: 'user',
@@ -63,4 +63,42 @@ const sendMessage = async () => {
         displayResponse(data);
     } catch (error) {
         console.error('Error:', error);
-        appendMessage('Error: Unable to get response
+        appendMessage('Error: Unable to get response from the bot. ' + error.message, 'Bot');
+    }
+};
+
+const displayResponse = (data) => {
+    // Log the full response for debugging
+    console.log('Full API Response:', data);
+
+    // Check if the response is an object
+    if (typeof data === 'object') {
+        // Check if the response has a 'choices' property
+        if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
+            const choice = data.choices[0]; // Get the first choice
+            if (choice && choice.text) {
+                appendMessage(choice.text, 'Bot'); // Display the bot's response text
+            } else {
+                appendMessage('No response text found in choices.', 'Bot');
+            }
+        } else if (data.error) {
+            // Check if the response has an 'error' property
+            appendMessage(`Error: ${data.error.message}`, 'Bot');
+        } else {
+            // Handle unexpected response format
+            appendMessage('Unexpected response format. Check console for details.', 'Bot');
+        }
+    } else if (typeof data === 'string') {
+        appendMessage(data, 'Bot');
+    } else {
+        appendMessage('Unexpected response format.', 'Bot');
+    }
+};
+
+// Event listeners
+sendBtn.addEventListener('click', sendMessage);
+userInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+});
