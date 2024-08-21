@@ -39,9 +39,14 @@ $(document).ready(function() {
             data: JSON.stringify(data),
             contentType: 'application/json',
             dataType: 'text',
-            success: function(botResponse) {
-                console.log('API Response:', botResponse);
-                addMessageToChatLog(body, botResponse);
+            success: function(response) {
+                const responseData = JSON.parse(response);
+                console.log('API Response:', responseData);
+                if (responseData.status === true) {
+                    addMessageToChatLog(body, responseData.result);
+                } else {
+                    addMessageToChatLog(body, 'Error: ' + responseData.status);
+                }
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
