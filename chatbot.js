@@ -87,6 +87,9 @@ const displayResponse = (data) => {
         } else if (data.error) {
             // Check if the response has an 'error' property
             appendMessage(`Error: ${data.error.message}`, 'Bot');
+        } else if (data.result) {
+            // Check if the response has a 'result' property
+            appendMessage(data.result.response || 'No response available.', 'Bot');
         } else {
             // Handle unexpected response format
             appendMessage('Unexpected response format. Check console for details.', 'Bot');
