@@ -1,9 +1,14 @@
 const url = 'https://api.aimlapi.com/chat/completions';
-const apiKey = 'f41d3c8b7c0b4c9e942360989cd72a05'; // Your API key
 
 const chatbox = document.getElementById('chatbox');
 const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
+const loginBtn = document.getElementById('loginBtn');
+const apiKeyInput = document.getElementById('apiKeyInput');
+const loginContainer = document.getElementById('loginContainer');
+const chatContainer = document.getElementById('chatContainer');
+
+let apiKey = '';
 
 const appendMessage = (message, sender) => {
     const messageElement = document.createElement('div');
@@ -29,7 +34,7 @@ const sendMessage = async () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'gpt-4o', // Model name as per your requirement
+            model: 'mistralai/Mistral-7B-Instruct-v0.2', // Model name as per your requirement
             messages: [
                 {
                     role: 'user',
@@ -100,5 +105,17 @@ sendBtn.addEventListener('click', sendMessage);
 userInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         sendMessage();
+    }
+});
+
+// Login functionality
+loginBtn.addEventListener('click', () => {
+    apiKey = apiKeyInput.value.trim();
+    if (apiKey) {
+        loginContainer.style.display = 'none'; // Hide login container
+        chatContainer.style.display = 'flex'; // Show chat container
+        appendMessage('You are now logged in!', 'Bot');
+    } else {
+        appendMessage('Please enter a valid API key.', 'Bot');
     }
 });
