@@ -1,8 +1,26 @@
 const url = 'https://gemini-pro-ai.p.rapidapi.com/';
-const RAPIDAPI_KEY = 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO';
+const RAPIDAPI_KEY = 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO'; // Replace with your actual API key
+
+const chatbox = document.getElementById('chatbox');
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+
+const appendMessage = (message, sender) => {
+    const messageElement = document.createElement('div');
+    messageElement.textContent = `${sender}: ${message}`;
+    chatbox.appendChild(messageElement);
+    chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+};
 
 const sendMessage = async () => {
-    const message = 'Hello'; // Use a static message for testing
+    const message = userInput.value.trim();
+    if (message === '') {
+        appendMessage('Please enter a message.', 'Bot');
+        return; // Prevent empty messages
+    }
+
+    appendMessage(message, 'You');
+    userInput.value = ''; // Clear input field
 
     const options = {
         method: 'POST',
@@ -23,15 +41,57 @@ const sendMessage = async () => {
 
     try {
         const response = await fetch(url, options);
+        
+        // Check for HTTP errors
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`API Error (${response.status}): ${errorData.error || 'Unknown error'}`);
+            const errorText = await response.text(); // Get error response as text
+            throw new Error(`HTTP Error (${response.status}): ${errorText}`);
         }
-        const data = await response.json();
-        console.log(data);
+
+        // Handle response based on content type
+        const contentType = response.headers.get('Content-Type');
+        let data;
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            data = await response.text();
+        }
+
+        // Process and display the response
+        displayResponse(data);
     } catch (error) {
         console.error('Error:', error);
+        appendMessage('Error: Unable to get response from the bot. ' + error.message, 'Bot');
     }
 };
 
-sendMessage();
+const displayResponse = (data) => {
+    // Check if the response is a string
+    if (typeof data === 'string') {
+        appendMessage(data, 'Bot');
+    } 
+    // Check if the response is an array
+    else if (Array.isArray(data)) {
+        data.forEach(item => {
+            appendMessage(item, 'Bot');
+        });
+    } 
+    // Check if the response is an object
+    else if (typeof data === 'object') {
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                appendMessage(`${key}: ${data[key]}`, 'Bot');
+            }
+        }
+    } else {
+        appendMessage('Unexpected response format.', 'Bot');
+    }
+};
+
+// Event listeners
+sendBtn.addEventListener('click', sendMessage);
+userInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+});
