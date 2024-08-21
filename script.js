@@ -1,22 +1,22 @@
-const chatLog = document.getElementById('chat-log');
-const messageInput = document.getElementById('message-input');
+const bodyInput = document.getElementById('body-input');
 const sendButton = document.getElementById('send-button');
+const responseOutput = document.getElementById('response-output');
 
 sendButton.addEventListener('click', (e) => {
     e.preventDefault();
-    const message = messageInput.value.trim();
-    if (message) {
-        sendMessage(message);
-        messageInput.value = '';
+    const body = bodyInput.value.trim();
+    if (body) {
+        sendRequest(body);
+        bodyInput.value = '';
     }
 });
 
-function sendMessage(message) {
+function sendRequest(body) {
     const data = {
         messages: [
             {
                 role: 'user',
-                content: message
+                content: body
             }
         ],
         system_prompt: '',
@@ -38,37 +38,18 @@ function sendMessage(message) {
         headers: headers,
         body: JSON.stringify(data)
     })
-    .then((response) => {
-        console.log('API Response Status:', response.status);
-        console.log('API Response Status Text:', response.statusText);
-        return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
-        console.log('API Response Data:', data);
         if (data && data.content) {
             const botResponse = data.content;
-            addMessageToChatLog(message, botResponse);
+            responseOutput.textContent = `Bot Response: ${botResponse}`;
         } else {
             console.error('Invalid response format:', data);
-            addMessageToChatLog(message, 'Error: Invalid response format');
+            responseOutput.textContent = 'Error: Invalid response format';
         }
     })
     .catch((error) => {
         console.error('Error:', error);
-        addMessageToChatLog(message, 'Error: ' + error.message);
+        responseOutput.textContent = 'Error: ' + error.message;
     });
-}
-
-function addMessageToChatLog(userMessage, botResponse) {
-    const userLi = document.createElement('li');
-    userLi.classList.add('user');
-    userLi.textContent = `You: ${userMessage}`;
-    chatLog.appendChild(userLi);
-
-    const botLi = document.createElement('li');
-    botLi.classList.add('bot');
-    botLi.textContent = `Bot: ${botResponse}`;
-    chatLog.appendChild(botLi);
-
-    chatLog.scrollTop = chatLog.scrollHeight;
 }
