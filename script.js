@@ -1,6 +1,6 @@
 const bodyInput = document.getElementById('body-input');
 const sendButton = document.getElementById('send-button');
-const responseOutput = document.getElementById('response-output');
+const chatLog = document.getElementById('chat-log');
 
 sendButton.addEventListener('click', (e) => {
     e.preventDefault();
@@ -41,11 +41,25 @@ function sendRequest(body) {
     .then((response) => response.json())
     .then((data) => {
         console.log('API Response:', data);
-        const responseText = JSON.stringify(data, null, 2);
-        responseOutput.textContent = responseText;
+        const botResponse = data.messages[0].content;
+        addMessageToChatLog(body, botResponse);
     })
     .catch((error) => {
         console.error('Error:', error);
-        responseOutput.textContent = 'Error: ' + error.message;
+        addMessageToChatLog(body, 'Error: ' + error.message);
     });
+}
+
+function addMessageToChatLog(userMessage, botResponse) {
+    const userLi = document.createElement('li');
+    userLi.classList.add('user');
+    userLi.textContent = `You: ${userMessage}`;
+    chatLog.appendChild(userLi);
+
+    const botLi = document.createElement('li');
+    botLi.classList.add('bot');
+    botLi.textContent = `Bot: ${botResponse}`;
+    chatLog.appendChild(botLi);
+
+    chatLog.scrollTop = chatLog.scrollHeight;
 }
