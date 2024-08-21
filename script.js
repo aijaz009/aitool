@@ -38,39 +38,12 @@ function sendMessage(message) {
     })
     .then((response) => {
         console.log('API Response:', response);
-        if (response.ok) {
-            return response.json();
-        } else {
-            console.error('API Error:', response.status, response.statusText);
-            throw new Error(`API Error: ${response.status} ${response.statusText}`);
-        }
+        return response.json();
     })
     .then((data) => {
         console.log('API Response Data:', data);
-        if (data && data.content) {
-            const botResponse = data.content;
-            addMessageToChatLog(message, botResponse);
-        } else {
-            console.error('Invalid response format:', data);
-            addMessageToChatLog(message, 'Error: Invalid response format');
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        addMessageToChatLog(message, 'Error: ' + error.message);
-    });
-}
-
-function addMessageToChatLog(userMessage, botResponse) {
-    const userLi = document.createElement('li');
-    userLi.classList.add('user');
-    userLi.textContent = userMessage;
-    chatLog.appendChild(userLi);
-
-    const botLi = document.createElement('li');
-    botLi.classList.add('bot');
-    botLi.textContent = botResponse;
-    chatLog.appendChild(botLi);
-
-    chatLog.scrollTop = chatLog.scrollHeight;
-}
+        if (data) {
+            console.log('API Response Object Keys:', Object.keys(data));
+            for (const key in data) {
+                if (Object.hasOwnProperty.call(data, key)) {
+                    console.log(`API
