@@ -38,15 +38,10 @@ $(document).ready(function() {
             headers: headers,
             data: JSON.stringify(data),
             contentType: 'application/json',
-            success: function(responseData) {
-                console.log('API Response:', responseData);
-                if (responseData && responseData.content) {
-                    const botResponse = responseData.content;
-                    addMessageToChatLog(body, botResponse);
-                } else {
-                    console.error('Invalid response format:', responseData);
-                    addMessageToChatLog(body, 'Error: Invalid response format');
-                }
+            dataType: 'text',
+            success: function(botResponse) {
+                console.log('API Response:', botResponse);
+                addMessageToChatLog(body, botResponse);
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
