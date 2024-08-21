@@ -9,15 +9,6 @@ const apiSettings = {
         'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-        messages: [{ role: 'user', content: '' }],
-        system_prompt: '',
-        temperature: 0.9,
-        top_k: 5,
-        top_p: 0.9,
-        max_tokens: 256,
-        web_access: false,
-    }),
 };
 
 sendButton.addEventListener('click', (e) => {
@@ -30,7 +21,7 @@ sendButton.addEventListener('click', (e) => {
 });
 
 function sendMessage(message) {
-    apiSettings.body = JSON.stringify({
+    const data = JSON.stringify({
         messages: [{ role: 'user', content: message }],
         system_prompt: '',
         temperature: 0.9,
@@ -40,7 +31,11 @@ function sendMessage(message) {
         web_access: false,
     });
 
-    fetch('https://chatgpt-42.p.rapidapi.com/conversationgpt4-2', apiSettings)
+    fetch('https://chatgpt-42.p.rapidapi.com/conversationgpt4-2', {
+        method: apiSettings.method,
+        headers: apiSettings.headers,
+        body: data,
+    })
         .then((response) => response.json())
         .then((data) => {
             const botResponse = data.messages[0].content;
@@ -55,4 +50,10 @@ function addMessageToChatLog(userMessage, botResponse) {
     userLi.textContent = userMessage;
     chatLog.appendChild(userLi);
 
-    const
+    const botLi = document.createElement('li');
+    botLi.classList.add('bot');
+    botLi.textContent = botResponse;
+    chatLog.appendChild(botLi);
+
+    chatLog.scrollTop = chatLog.scrollHeight;
+}
