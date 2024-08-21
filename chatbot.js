@@ -81,17 +81,9 @@ const displayResponse = (data) => {
             // Check if the response has an 'error' property
             appendMessage(`Error: ${data.error.message}`, 'Bot');
         } else {
-            // If no choices and no error, display other relevant information
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    // Check if the value is an object
-                    if (typeof data[key] === 'object') {
-                        appendMessage(`${key}: ${JSON.stringify(data[key])}`, 'Bot'); // Display as JSON string
-                    } else {
-                        appendMessage(`${key}: ${data[key]}`, 'Bot'); // Display normal values
-                    }
-                }
-            }
+            // Log the entire response for debugging
+            console.log('Full API Response:', data);
+            appendMessage('Unexpected response format. Check console for details.', 'Bot');
         }
     } else if (typeof data === 'string') {
         appendMessage(data, 'Bot');
