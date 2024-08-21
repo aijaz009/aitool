@@ -40,13 +40,8 @@ $(document).ready(function() {
             contentType: 'application/json',
             dataType: 'text',
             success: function(response) {
-                const responseData = JSON.parse(response);
-                console.log('API Response:', responseData);
-                if (responseData.status === true) {
-                    addMessageToChatLog(body, responseData.result);
-                } else {
-                    addMessageToChatLog(body, 'Error: ' + responseData.status);
-                }
+                console.log('API Response:', response);
+                addMessageToChatLog(body, response);
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
