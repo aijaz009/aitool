@@ -48,7 +48,7 @@ function sendMessage(content) {
     settings.data = JSON.stringify(data);
 
     $.ajax(settings).done(function (response) {
-        console.log(response); // Log the entire response for debugging
+        console.log("API Response:", response); // Log the entire response for debugging
         if (response.choices && response.choices.length > 0) {
             const botResponse = response.choices[0].message.content; // Adjust according to API response structure
             appendMessage(botResponse, 'bot');
