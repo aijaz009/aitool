@@ -3,16 +3,21 @@ const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 
 const apiSettings = {
-    async: true,
-    crossDomain: true,
-    url: 'https://chatgpt-42.p.rapidapi.com/conversationgpt4-2',
     method: 'POST',
     headers: {
         'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
         'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
         'Content-Type': 'application/json'
     },
-    processData: false,
+    body: JSON.stringify({
+        messages: [{ role: 'user', content: '' }],
+        system_prompt: '',
+        temperature: 0.9,
+        top_k: 5,
+        top_p: 0.9,
+        max_tokens: 256,
+        web_access: false,
+    }),
 };
 
 sendButton.addEventListener('click', (e) => {
@@ -25,7 +30,7 @@ sendButton.addEventListener('click', (e) => {
 });
 
 function sendMessage(message) {
-    const data = JSON.stringify({
+    apiSettings.body = JSON.stringify({
         messages: [{ role: 'user', content: message }],
         system_prompt: '',
         temperature: 0.9,
@@ -35,12 +40,13 @@ function sendMessage(message) {
         web_access: false,
     });
 
-    apiSettings.data = data;
-
-    $.ajax(apiSettings).done((response) => {
-        const botResponse = response.messages[0].content;
-        addMessageToChatLog(message, botResponse);
-    });
+    fetch('https://chatgpt-42.p.rapidapi.com/conversationgpt4-2', apiSettings)
+        .then((response) => response.json())
+        .then((data) => {
+            const botResponse = data.messages[0].content;
+            addMessageToChatLog(message, botResponse);
+        })
+        .catch((error) => console.error(error));
 }
 
 function addMessageToChatLog(userMessage, botResponse) {
@@ -49,10 +55,4 @@ function addMessageToChatLog(userMessage, botResponse) {
     userLi.textContent = userMessage;
     chatLog.appendChild(userLi);
 
-    const botLi = document.createElement('li');
-    botLi.classList.add('bot');
-    botLi.textContent = botResponse;
-    chatLog.appendChild(botLi);
-
-    chatLog.scrollTop = chatLog.scrollHeight;
-}
+    const
