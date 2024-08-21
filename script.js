@@ -1,27 +1,5 @@
-const chatLog = document.getElementById('chat-log');
-const messageInput = document.getElementById('message-input');
-const sendButton = document.getElementById('send-button');
-
-const apiSettings = {
-    method: 'POST',
-    headers: {
-        'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
-        'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
-        'Content-Type': 'application/json'
-    },
-};
-
-sendButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    const message = messageInput.value.trim();
-    if (message) {
-        sendMessage(message);
-        messageInput.value = '';
-    }
-});
-
 function sendMessage(message) {
-    const data = JSON.stringify({
+    const data = {
         messages: [
             {
                 role: 'user',
@@ -34,25 +12,33 @@ function sendMessage(message) {
         top_p: 0.9,
         max_tokens: 256,
         web_access: false
-    });
+    };
 
     fetch('https://chatgpt-42.p.rapidapi.com/conversationgpt4-2', {
-        method: apiSettings.method,
-        headers: apiSettings.headers,
-        body: data,
+        method: 'POST',
+        headers: {
+            'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
+            'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     })
-        .then((response) => {
-            console.log('API Response:', response);
-            return response.json();
-        })
-        .then((data) => {
-            console.log('API Response Data:', data);
-            if (data) {
-                console.log('API Response Object Keys:', Object.keys(data));
-                for (const key in data) {
-                    if (Object.hasOwnProperty.call(data, key)) {
-                        console.log(`API Response ${key}:`, data[key]);
-                        if (typeof data[key] === 'object') {
-                            console.log(`API Response ${key} Object Keys:`, Object.keys(data[key]));
-                        }
-                        if (key === 'content') {
+    .then((response) => {
+        console.log('API Response:', response);
+        return response.json();
+    })
+    .then((data) => {
+        console.log('API Response Data:', data);
+        if (data && data.content) {
+            const botResponse = data.content;
+            addMessageToChatLog(message, botResponse);
+        } else {
+            console.error('Invalid response format:', data);
+            addMessageToChatLog(message, 'Error: Invalid response format');
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        addMessageToChatLog(message, 'Error: ' + error.message);
+    });
+}
