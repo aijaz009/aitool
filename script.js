@@ -47,30 +47,12 @@ function sendMessage(message) {
         })
         .then((data) => {
             console.log('API Response Data:', data);
-            if (data && data.messages && data.messages[0] && data.messages[0].content) {
-                const botResponse = data.messages[0].content;
-                addMessageToChatLog(message, botResponse);
-            } else {
-                console.error('Invalid response format:', data);
-                addMessageToChatLog(message, 'Error: Invalid response format');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            addMessageToChatLog(message, 'Error: ' + error.message);
-        });
-}
-
-function addMessageToChatLog(userMessage, botResponse) {
-    const userLi = document.createElement('li');
-    userLi.classList.add('user');
-    userLi.textContent = userMessage;
-    chatLog.appendChild(userLi);
-
-    const botLi = document.createElement('li');
-    botLi.classList.add('bot');
-    botLi.textContent = botResponse;
-    chatLog.appendChild(botLi);
-
-    chatLog.scrollTop = chatLog.scrollHeight;
-}
+            if (data) {
+                console.log('API Response Object Keys:', Object.keys(data));
+                for (const key in data) {
+                    if (Object.hasOwnProperty.call(data, key)) {
+                        console.log(`API Response ${key}:`, data[key]);
+                        if (typeof data[key] === 'object') {
+                            console.log(`API Response ${key} Object Keys:`, Object.keys(data[key]));
+                        }
+                        if (key === 'content') {
