@@ -77,8 +77,11 @@ const displayResponse = (data) => {
             } else {
                 appendMessage('No response text found in choices.', 'Bot');
             }
+        } else if (data.error) {
+            // Check if the response has an 'error' property
+            appendMessage(`Error: ${data.error.message}`, 'Bot');
         } else {
-            // If no choices, display other relevant information
+            // If no choices and no error, display other relevant information
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
                     // Check if the value is an object
