@@ -38,10 +38,18 @@ function sendMessage(message) {
     })
         .then((response) => response.json())
         .then((data) => {
-            const botResponse = data.messages[0].content;
-            addMessageToChatLog(message, botResponse);
+            if (data.messages && data.messages.length > 0) {
+                const botResponse = data.messages[0].content;
+                addMessageToChatLog(message, botResponse);
+            } else {
+                console.error('Invalid response format:', data);
+                addMessageToChatLog(message, 'Error: Invalid response format');
+            }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            console.error('Error:', error);
+            addMessageToChatLog(message, 'Error: ' + error.message);
+        });
 }
 
 function addMessageToChatLog(userMessage, botResponse) {
