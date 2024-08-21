@@ -1,4 +1,4 @@
-const url = 'https://gemini-pro-ai.p.rapidapi.com/';
+const url = 'https://open-ai21.p.rapidapi.com/conversationpalm2';
 const RAPIDAPI_KEY = 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO'; // Replace with your actual API key
 
 const chatbox = document.getElementById('chatbox');
@@ -26,14 +26,14 @@ const sendMessage = async () => {
         method: 'POST',
         headers: {
             'x-rapidapi-key': RAPIDAPI_KEY,
-            'x-rapidapi-host': 'gemini-pro-ai.p.rapidapi.com',
+            'x-rapidapi-host': 'open-ai21.p.rapidapi.com',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            contents: [
+            messages: [
                 {
                     role: 'user',
-                    parts: [{ text: message }]
+                    content: message
                 }
             ]
         })
