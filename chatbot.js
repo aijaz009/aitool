@@ -39,15 +39,38 @@ const sendMessage = async () => {
     try {
         const response = await fetch(url, options);
         if (!response.ok) {
-            const errorText = await response.text(); // Get the error response as text
-            throw new Error(`API Error (${response.status}): ${errorText}`);
+            const errorData = await getResponseData(response);
+            throw new Error(`API Error (${response.status}): ${errorData.error || 'Unknown error'}`);
         }
         
-        const resultText = await response.text(); // Get the response as text
-        appendMessage(resultText, 'Bot'); // Display bot's reply
+        const data = await getResponseData(response);
+        appendBotResponse(data); // Display bot's reply
     } catch (error) {
         console.error('Error:', error);
         appendMessage('Error: Unable to get response from the bot.', 'Bot');
+    }
+};
+
+const getResponseData = async (response) => {
+    const contentType = response.headers.get('Content-Type');
+    if (contentType && contentType.includes('application/json')) {
+        return await response.json();
+    } else {
+        return await response.text();
+    }
+};
+
+const appendBotResponse = (data) => {
+    if (typeof data === 'string') {
+        appendMessage(data, 'Bot');
+    } else if (Array.isArray(data)) {
+        for (const item of data) {
+            appendMessage(item, 'Bot');
+        }
+    } else if (typeof data === 'object') {
+        for (const key in data) {
+            appendMessage(`${key}: ${data[key]}`, 'Bot');
+        }
     }
 };
 
