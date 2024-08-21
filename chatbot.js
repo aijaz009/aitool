@@ -67,23 +67,31 @@ const sendMessage = async () => {
 };
 
 const displayResponse = (data) => {
-    // Check if the response is a string
-    if (typeof data === 'string') {
-        appendMessage(data, 'Bot');
-    } 
-    // Check if the response is an array
-    else if (Array.isArray(data)) {
-        data.forEach(item => {
-            appendMessage(item, 'Bot');
-        });
-    } 
     // Check if the response is an object
-    else if (typeof data === 'object') {
-        for (const key in data) {
-            if (data.hasOwnProperty(key)) {
-                appendMessage(`${key}: ${data[key]}`, 'Bot');
+    if (typeof data === 'object') {
+        // Check if the response has a 'choices' property
+        if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
+            const choice = data.choices[0]; // Get the first choice
+            if (choice && choice.text) {
+                appendMessage(choice.text, 'Bot'); // Display the bot's response text
+            } else {
+                appendMessage('No response text found in choices.', 'Bot');
+            }
+        } else {
+            // If no choices, display other relevant information
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    // Check if the value is an object
+                    if (typeof data[key] === 'object') {
+                        appendMessage(`${key}: ${JSON.stringify(data[key])}`, 'Bot'); // Display as JSON string
+                    } else {
+                        appendMessage(`${key}: ${data[key]}`, 'Bot'); // Display normal values
+                    }
+                }
             }
         }
+    } else if (typeof data === 'string') {
+        appendMessage(data, 'Bot');
     } else {
         appendMessage('Unexpected response format.', 'Bot');
     }
