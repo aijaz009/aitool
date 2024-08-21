@@ -1,23 +1,64 @@
-const form = document.getElementById('api-form');
-const responseDiv = document.getElementById('response');
+const chatLog = document.getElementById('chat-log');
+const messageInput = document.getElementById('message-input');
+const sendButton = document.getElementById('send-button');
 
-form.addEventListener('submit', (e) => {
+sendButton.addEventListener('click', (e) => {
     e.preventDefault();
-    const url = document.getElementById('url').value;
-    const method = document.getElementById('method').value;
-    const headers = JSON.parse(document.getElementById('headers').value);
-    const body = document.getElementById('body').value;
+    const message = messageInput.value.trim();
+    if (message) {
+        sendMessage(message);
+        messageInput.value = '';
+    }
+});
 
-    fetch(url, {
-        method: method,
+function sendMessage(message) {
+    const data = {
+        messages: [
+            {
+                role: 'user',
+                content: message
+            }
+        ],
+        system_prompt: '',
+        temperature: 0.9,
+        top_k: 5,
+        top_p: 0.9,
+        max_tokens: 256,
+        web_access: false
+    };
+
+    const headers = {
+        'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
+        'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
+        'Content-Type': 'application/json'
+    };
+
+    fetch('https://chatgpt-42.p.rapidapi.com/conversationgpt4-2', {
+        method: 'POST',
         headers: headers,
-        body: body
+        body: JSON.stringify(data)
     })
     .then((response) => response.json())
     .then((data) => {
-        responseDiv.innerText = JSON.stringify(data, null, 2);
+        const botResponse = data.content;
+        addMessageToChatLog(message, botResponse);
     })
     .catch((error) => {
-        responseDiv.innerText = error.message;
+        console.error('Error:', error);
+        addMessageToChatLog(message, 'Error: ' + error.message);
     });
-});
+}
+
+function addMessageToChatLog(userMessage, botResponse) {
+    const userLi = document.createElement('li');
+    userLi.classList.add('user');
+    userLi.textContent = userMessage;
+    chatLog.appendChild(userLi);
+
+    const botLi = document.createElement('li');
+    botLi.classList.add('bot');
+    botLi.textContent = botResponse;
+    chatLog.appendChild(botLi);
+
+    chatLog.scrollTop = chatLog.scrollHeight;
+}
