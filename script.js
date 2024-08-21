@@ -30,11 +30,20 @@ $(document).ready(function() {
             })
         };
 
+        console.log('Sending request:', settings);
+
         $.ajax(settings)
             .done(function(response) {
-                $('#response-text').text(response.choices[0].message.content);
+                console.log('API Response:', response);
+                // Adjust based on the actual API response structure
+                if (response && response.choices && response.choices.length > 0) {
+                    $('#response-text').text(response.choices[0].message.content);
+                } else {
+                    $('#response-text').text('No response data available.');
+                }
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
+                console.error('Request failed:', textStatus, errorThrown);
                 $('#response-text').text('Error: ' + textStatus + ', ' + errorThrown);
             });
     });
