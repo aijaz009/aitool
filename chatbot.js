@@ -1,5 +1,5 @@
-const url = 'https://meta-llama-3-8b.p.rapidapi.com/';
-const RAPIDAPI_KEY = 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO'; // Replace with your actual API key
+const url = 'https://api.aimlapi.com/chat/completions';
+const apiKey = 'f41d3c8b7c0b4c9e942360989cd72a05'; // Your API key
 
 const chatbox = document.getElementById('chatbox');
 const userInput = document.getElementById('userInput');
@@ -25,18 +25,19 @@ const sendMessage = async () => {
     const options = {
         method: 'POST',
         headers: {
-            'x-rapidapi-key': RAPIDAPI_KEY,
-            'x-rapidapi-host': 'meta-llama-3-8b.p.rapidapi.com',
+            'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'meta-llama/Llama-3-8b-chat-hf',
+            model: 'gpt-4o',
             messages: [
                 {
                     role: 'user',
                     content: message
                 }
-            ]
+            ],
+            max_tokens: 512,
+            stream: false
         })
     };
 
