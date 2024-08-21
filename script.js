@@ -40,8 +40,9 @@ function sendRequest(body) {
     })
     .then((response) => response.json())
     .then((data) => {
-        if (data && data.content) {
-            const botResponse = data.content;
+        console.log('API Response:', data);
+        if (data && data.messages && data.messages[0] && data.messages[0].content) {
+            const botResponse = data.messages[0].content;
             responseOutput.textContent = `Bot Response: ${botResponse}`;
         } else {
             console.error('Invalid response format:', data);
