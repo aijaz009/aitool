@@ -48,8 +48,13 @@ function sendMessage(content) {
     settings.data = JSON.stringify(data);
 
     $.ajax(settings).done(function (response) {
-        const botResponse = response.choices[0].message.content; // Adjust according to API response structure
-        appendMessage(botResponse, 'bot');
+        console.log(response); // Log the entire response for debugging
+        if (response.choices && response.choices.length > 0) {
+            const botResponse = response.choices[0].message.content; // Adjust according to API response structure
+            appendMessage(botResponse, 'bot');
+        } else {
+            appendMessage("No response from the bot.", 'bot');
+        }
     }).fail(function (error) {
         console.error("Error:", error);
         appendMessage("Sorry, something went wrong.", 'bot');
