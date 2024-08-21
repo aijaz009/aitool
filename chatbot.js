@@ -9,6 +9,7 @@ const loginContainer = document.getElementById('loginContainer');
 const chatContainer = document.getElementById('chatContainer');
 
 let apiKey = '';
+let messageHistory = []; // Array to store message history
 
 const appendMessage = (message, sender) => {
     const messageElement = document.createElement('div');
@@ -25,6 +26,7 @@ const sendMessage = async () => {
     }
 
     appendMessage(message, 'You');
+    messageHistory.push({ role: 'user', content: message }); // Record user message
     userInput.value = ''; // Clear input field
 
     const options = {
@@ -35,12 +37,7 @@ const sendMessage = async () => {
         },
         body: JSON.stringify({
             model: 'mistralai/Mistral-7B-Instruct-v0.2', // Model name as per your requirement
-            messages: [
-                {
-                    role: 'user',
-                    content: message
-                }
-            ],
+            messages: messageHistory, // Send the entire message history
             max_tokens: 512,
             stream: false
         })
@@ -83,6 +80,7 @@ const displayResponse = (data) => {
             const choice = data.choices[0]; // Get the first choice
             if (choice && choice.text) {
                 appendMessage(choice.text, 'Bot'); // Display the bot's response text
+                messageHistory.push({ role: 'assistant', content: choice.text }); // Record bot response
             } else {
                 appendMessage('No response text found in choices.', 'Bot');
             }
