@@ -11,11 +11,11 @@ $(document).ready(function() {
         const settings = {
             async: true,
             crossDomain: true,
-            url: 'https://chatgpt-42.p.rapidapi.com/conversationgpt4-2', // Ensure this URL is correct
+            url: 'https://chatgpt-42.p.rapidapi.com/conversationgpt4-2',
             method: 'POST',
             headers: {
-                'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO', // Ensure API key is correct
-                'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com', // Ensure this matches the API host
+                'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
+                'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
                 'Content-Type': 'application/json'
             },
             processData: false,
@@ -44,6 +44,9 @@ $(document).ready(function() {
             .fail(function(jqXHR, textStatus, errorThrown) {
                 console.error('Request failed:', textStatus, errorThrown);
                 $('#response-text').text('Error: ' + textStatus + ', ' + errorThrown);
+                if (jqXHR.responseText) {
+                    console.error('Response text:', jqXHR.responseText);
+                }
             });
     });
 });
