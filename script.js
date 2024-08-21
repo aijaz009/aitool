@@ -52,12 +52,12 @@ function sendMessage(message) {
 function addMessageToChatLog(userMessage, botResponse) {
     const userLi = document.createElement('li');
     userLi.classList.add('user');
-    userLi.textContent = userMessage;
+    userLi.textContent = `You: ${userMessage}`;
     chatLog.appendChild(userLi);
 
     const botLi = document.createElement('li');
     botLi.classList.add('bot');
-    botLi.textContent = botResponse;
+    botLi.textContent = `Bot: ${botResponse}`;
     chatLog.appendChild(botLi);
 
     chatLog.scrollTop = chatLog.scrollHeight;
