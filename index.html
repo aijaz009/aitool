@@ -5,12 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot Application</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="chat-container" id="chatContainer" style="display: none;">
-        <div id="chatbox"></div>
-        <input type="text" id="userInput" placeholder="Type your message..." />
-        <button id="sendBtn">Send</button>
+    <div class="container">
+        <div class="chatbot-container">
+            <div class="chatbot-header">
+                <h2>Chatbot</h2>
+            </div>
+            <div class="chatbot-content">
+                <div class="chatbox" id="chatbox">
+                    <div class="message bot">
+                        <div class="avatar">
+                            <img src="bot-avatar.png" alt="Bot Avatar">
+                        </div>
+                        <div class="content">
+                            <p>Welcome! How can I assist you today?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-container">
+                    <input type="text" id="userInput" placeholder="Type your message..." />
+                    <button id="sendBtn">Send</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="chatbot.js"></script>
