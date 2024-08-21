@@ -1,82 +1,72 @@
-const chatLog = document.getElementById('chat-log');
-const messageInput = document.getElementById('message-input');
-const sendButton = document.getElementById('send-button');
-
-sendButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    const message = messageInput.value.trim();
-    if (message) {
-        sendMessage(message);
-        messageInput.value = '';
-    }
-});
-
-function sendMessage(message) {
-    const data = {
-        messages: [
-            {
-                role: 'user',
-                content: message
-            }
-        ],
-        system_prompt: '',
-        temperature: 0.9,
-        top_k: 5,
-        top_p: 0.9,
-        max_tokens: 256,
-        web_access: false
-    };
-
-    fetch('https://chatgpt-42.p.rapidapi.com/conversationgpt4-2', {
-        method: 'POST',
-        headers: {
-            'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
-            'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then((response) => {
-        console.log('API Response:', response);
-        return response.json();
-    })
-    .then((data) => {
-        console.log('API Response Data:', data);
-        if (data) {
-            console.log('API Response Object Keys:', Object.keys(data));
-            for (const key in data) {
-                if (Object.hasOwnProperty.call(data, key)) {
-                    console.log(`API Response ${key}:`, data[key]);
-                    if (typeof data[key] === 'object') {
-                        console.log(`API Response ${key} Object Keys:`, Object.keys(data[key]));
-                    }
-                    if (key === 'content') {
-                        const botResponse = data[key];
-                        addMessageToChatLog(message, botResponse);
-                    }
-                }
-            }
-        } else {
-            console.error('Invalid response format:', data);
-            addMessageToChatLog(message, 'Error: Invalid response format');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
         }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        addMessageToChatLog(message, 'Error: ' + error.message);
-    });
-}
+        #api-tester {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3e8e41;
+        }
+        #response {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="api-tester">
+        <h1>API Tester</h1>
+        <form id="api-form">
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" required>
+            <label for="method">Method:</label>
+            <select id="method" name="method">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+            </select>
+            <label for="headers">Headers:</label>
+            <textarea id="headers" name="headers"></textarea>
+            <label for="body">Body:</label>
+            <textarea id="body" name="body"></textarea>
+            <button id="send-button">Send Request</button>
+        </form>
+        <div id="response"></div>
+    </div>
 
-function addMessageToChatLog(userMessage, botResponse) {
-    const userLi = document.createElement('li');
-    userLi.classList.add('user');
-    userLi.textContent = userMessage;
-    chatLog.appendChild(userLi);
-
-    const botLi = document.createElement('li');
-    botLi.classList.add('bot');
-    botLi.textContent = botResponse;
-    chatLog.appendChild(botLi);
-
-    chatLog.scrollTop = chatLog.scrollHeight;
-}
+    <script src="script.js"></script>
+</body>
+</html>
