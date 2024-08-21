@@ -1,69 +1,64 @@
-const bodyInput = document.getElementById('body-input');
-const sendButton = document.getElementById('send-button');
-const chatLog = document.getElementById('chat-log');
+// script.js
 
-sendButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    const body = bodyInput.value.trim();
-    if (body) {
-        sendRequest(body);
-        bodyInput.value = '';
+$(document).ready(function() {
+    $('#send-button').click(function(e) {
+        e.preventDefault();
+        const body = $('#body-input').val().trim();
+        if (body) {
+            sendRequest(body);
+            $('#body-input').val('');
+        }
+    });
+
+    function sendRequest(body) {
+        const data = {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": body
+                }
+            ],
+            "system_prompt": "",
+            "temperature": 0.9,
+            "top_k": 5,
+            "top_p": 0.9,
+            "max_tokens": 256,
+            "web_access": false
+        };
+
+        const headers = {
+            'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
+            'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
+            'Content-Type': 'application/json'
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: 'https://chatgpt-42.p.rapidapi.com/conversationgpt4-2',
+            headers: headers,
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(responseData) {
+                console.log('API Response:', responseData);
+                if (responseData && responseData.content) {
+                    const botResponse = responseData.content;
+                    addMessageToChatLog(body, botResponse);
+                } else {
+                    console.error('Invalid response format:', responseData);
+                    addMessageToChatLog(body, 'Error: Invalid response format');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                addMessageToChatLog(body, 'Error: ' + error);
+            }
+        });
+    }
+
+    function addMessageToChatLog(userMessage, botResponse) {
+        const userLi = $('<li class="user">You: ' + userMessage + '</li>');
+        const botLi = $('<li class="bot">Bot: ' + botResponse + '</li>');
+        $('#chat-log').append(userLi).append(botLi);
+        $('#chat-log').scrollTop($('#chat-log')[0].scrollHeight);
     }
 });
-
-function sendRequest(body) {
-    const data = {
-        "messages": [
-            {
-                "role": "user",
-                "content": body
-            }
-        ],
-        "system_prompt": "",
-        "temperature": 0.9,
-        "top_k": 5,
-        "top_p": 0.9,
-        "max_tokens": 256,
-        "web_access": false
-    };
-
-    const headers = {
-        'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
-        'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
-        'Content-Type': 'application/json'
-    };
-
-    fetch('https://chatgpt-42.p.rapidapi.com/conversationgpt4-2', {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(data)
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log('API Response:', data);
-        if (data && data.messages && data.messages[0] && data.messages[0].content) {
-            const botResponse = data.messages[0].content;
-            addMessageToChatLog(body, botResponse);
-        } else {
-            addMessageToChatLog(body, 'Error: Invalid response format');
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        addMessageToChatLog(body, 'Error: ' + error.message);
-    });
-}
-
-function addMessageToChatLog(userMessage, botResponse) {
-    const userLi = document.createElement('li');
-    userLi.classList.add('user');
-    userLi.textContent = `You: ${userMessage}`;
-    chatLog.appendChild(userLi);
-
-    const botLi = document.createElement('li');
-    botLi.classList.add('bot');
-    botLi.textContent = `Bot: ${botResponse}`;
-    chatLog.appendChild(botLi);
-
-    chatLog.scrollTop = chatLog.scrollHeight;
-}
