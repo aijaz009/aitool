@@ -78,18 +78,15 @@ const displayResponse = (data) => {
         // Check if the response has a 'choices' property
         if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
             const choice = data.choices[0]; // Get the first choice
-            if (choice && choice.text) {
-                appendMessage(choice.text.trim(), 'Bot'); // Display the bot's response text
-                messageHistory.push({ role: 'assistant', content: choice.text.trim() }); // Record bot response
+            if (choice && choice.message && choice.message.content) {
+                appendMessage(choice.message.content.trim(), 'Bot'); // Display the bot's response text
+                messageHistory.push({ role: 'assistant', content: choice.message.content.trim() }); // Record bot response
             } else {
                 appendMessage('No response text found in choices.', 'Bot');
             }
         } else if (data.error) {
             // Check if the response has an 'error' property
             appendMessage(`Error: ${data.error.message}`, 'Bot');
-        } else if (data.result) {
-            // Check if the response has a 'result' property
-            appendMessage(data.result.response || 'No response available.', 'Bot');
         } else {
             // Handle unexpected response format
             appendMessage('Unexpected response format. Check console for details.', 'Bot');
