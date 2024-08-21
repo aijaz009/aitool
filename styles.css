@@ -16,12 +16,13 @@ body {
 }
 
 #chatbox {
-    height: 300px;
+    height: 400px;
     overflow-y: auto;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 10px;
     padding: 10px;
+    background-color: #f8f8f8;
 }
 
 #messages {
@@ -30,28 +31,50 @@ body {
 }
 
 .message {
-    margin: 5px 0;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 80%;
 }
 
 .user {
     align-self: flex-end;
     background-color: #e1ffc7;
-    padding: 5px;
-    border-radius: 5px;
 }
 
 .bot {
     align-self: flex-start;
     background-color: #f0f0f0;
-    padding: 5px;
-    border-radius: 5px;
 }
 
-input[type="text"] {
-    width: calc(100% - 90px);
-    padding: 10px;
+.input-container {
+    display: flex;
+    align-items: center;
 }
 
-button {
+#userInput {
+    flex-grow: 1;
     padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#sendBtn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+#sendBtn:hover {
+    background-color: #45a049;
+}
+
+#sendBtn i {
+    pointer-events: none;
 }
