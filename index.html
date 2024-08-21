@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT API Web App</title>
+    <title>ChatGPT-4 Web App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>ChatGPT API Web App</h1>
-        <form id="chat-form">
-            <label for="message">Enter your message:</label>
-            <textarea id="message" rows="4" placeholder="Type your message here..."></textarea>
-            <button type="submit">Send</button>
-        </form>
-        <div id="response" class="response">
-            <h2>Response:</h2>
-            <p id="response-text">Waiting for response...</p>
+    <h1>ChatGPT-4 Web App</h1>
+    <div class="chat-container">
+        <div class="chat-history">
+            <ul id="chat-log"></ul>
         </div>
+        <form id="send-message-form">
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-button">Send</button>
+        </form>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="scripts.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
