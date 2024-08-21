@@ -13,19 +13,20 @@ sendButton.addEventListener('click', (e) => {
 
 function sendRequest(body) {
     const data = {
-        messages: [
-            {
-                role: 'user',
-                content: body
-            }
-        ],
-        system_prompt: '',
-        temperature: 0.9,
-        top_k: 5,
-        top_p: 0.9,
-        max_tokens: 256,
-        web_access: false
-    };
+      {
+"messages": [
+{
+"role": "user",
+"content": "Hello, how are you?"
+}
+],
+"system_prompt": "",
+"temperature": 0.9,
+"top_k": 5,
+"top_p": 0.9,
+"max_tokens": 256,
+"web_access": false
+}
 
     const headers = {
         'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO',
