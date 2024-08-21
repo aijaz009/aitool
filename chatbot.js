@@ -1,14 +1,13 @@
 const url = 'https://api.aimlapi.com/chat/completions';
 
+// Hardcoded API key
+const apiKey = 'f41d3c8b7c0b4c9e942360989cd72a05'; // Replace with your actual API key
+
 const chatbox = document.getElementById('chatbox');
 const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
-const loginBtn = document.getElementById('loginBtn');
-const apiKeyInput = document.getElementById('apiKeyInput');
-const loginContainer = document.getElementById('loginContainer');
 const chatContainer = document.getElementById('chatContainer');
 
-let apiKey = '';
 let messageHistory = []; // Array to store message history
 
 const appendMessage = (message, sender) => {
@@ -87,6 +86,9 @@ const displayResponse = (data) => {
         } else if (data.error) {
             // Check if the response has an 'error' property
             appendMessage(`Error: ${data.error.message}`, 'Bot');
+        } else if (data.result) {
+            // Check if the response has a 'result' property
+            appendMessage(data.result.response || 'No response available.', 'Bot');
         } else {
             // Handle unexpected response format
             appendMessage('Unexpected response format. Check console for details.', 'Bot');
@@ -106,14 +108,6 @@ userInput.addEventListener('keypress', (event) => {
     }
 });
 
-// Login functionality
-loginBtn.addEventListener('click', () => {
-    apiKey = apiKeyInput.value.trim();
-    if (apiKey) {
-        loginContainer.style.display = 'none'; // Hide login container
-        chatContainer.style.display = 'flex'; // Show chat container
-        appendMessage('You are now logged in!', 'Bot');
-    } else {
-        appendMessage('Please enter a valid API key.', 'Bot');
-    }
-});
+// Show chat container directly
+chatContainer.style.display = 'flex'; // Show chat container
+appendMessage('Welcome! You can start chatting now.', 'Bot');
