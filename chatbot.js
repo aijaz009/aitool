@@ -79,8 +79,8 @@ const displayResponse = (data) => {
         if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
             const choice = data.choices[0]; // Get the first choice
             if (choice && choice.text) {
-                appendMessage(choice.text, 'Bot'); // Display the bot's response text
-                messageHistory.push({ role: 'assistant', content: choice.text }); // Record bot response
+                appendMessage(choice.text.trim(), 'Bot'); // Display the bot's response text
+                messageHistory.push({ role: 'assistant', content: choice.text.trim() }); // Record bot response
             } else {
                 appendMessage('No response text found in choices.', 'Bot');
             }
