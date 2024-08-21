@@ -36,10 +36,14 @@ function sendMessage(message) {
         headers: apiSettings.headers,
         body: data,
     })
-        .then((response) => response.json())
+        .then((response) => {
+            console.log('API Response:', response);
+            return response.json();
+        })
         .then((data) => {
-            if (data.messages && data.messages.length > 0) {
-                const botResponse = data.messages[0].content;
+            console.log('API Response Data:', data);
+            if (data && data.content) {
+                const botResponse = data.content;
                 addMessageToChatLog(message, botResponse);
             } else {
                 console.error('Invalid response format:', data);
