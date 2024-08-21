@@ -1,62 +1,80 @@
-const settings = {
-    async: true,
-    crossDomain: true,
-    url: 'https://chatgpt-42.p.rapidapi.com/conversationgpt4-2',
-    method: 'POST',
-    headers: {
-        'x-rapidapi-key': 'Qin9902wJRmshsTE54XUIARXzJqbp1JjOD8jsnrGlWi9N1m6jO', // Your API key
-        'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
-        'Content-Type': 'application/json'
-    },
-    processData: false,
-};
-
-$(document).ready(function () {
-    $('#sendBtn').click(function () {
-        const userInput = $('#userInput').val();
-        if (userInput) {
-            appendMessage(userInput, 'user');
-            $('#userInput').val(''); // Clear input field
-            sendMessage(userInput);
-        }
-    });
-
-    $('#userInput').keypress(function (e) {
-        if (e.which === 13) { // Enter key
-            $('#sendBtn').click();
-        }
-    });
-});
-
-function appendMessage(content, role) {
-    const messageClass = role === 'user' ? 'user' : 'bot';
-    $('#messages').append(`<div class="message ${messageClass}">${content}</div>`);
-    $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight); // Scroll to bottom
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
 }
 
-function sendMessage(content) {
-    const data = {
-        messages: [{ role: "user", content: content }],
-        system_prompt: "",
-        temperature: 0.9,
-        top_k: 5,
-        top_p: 0.9,
-        max_tokens: 256,
-        web_access: false
-    };
+.container {
+    width: 400px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
 
-    settings.data = JSON.stringify(data);
+#chatbox {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
 
-    $.ajax(settings).done(function (response) {
-        console.log("API Response:", response); // Log the entire response for debugging
-        if (response.choices && response.choices.length > 0) {
-            const botResponse = response.choices[0].message.content; // Adjust according to API response structure
-            appendMessage(botResponse, 'bot');
-        } else {
-            appendMessage("No response from the bot.", 'bot');
-        }
-    }).fail(function (error) {
-        console.error("Error:", error);
-        appendMessage("Sorry, something went wrong.", 'bot');
-    });
+#messages {
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 80%;
+}
+
+.user {
+    align-self: flex-end;
+    background-color: #e1ffc7;
+}
+
+.bot {
+    align-self: flex-start;
+    background-color: #f0f0f0;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+#userInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#sendBtn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+#sendBtn:hover {
+    background-color: #45a049;
+}
+
+#sendBtn i {
+    pointer-events: none;
 }
