@@ -80,10 +80,18 @@ body {
     max-width: 70%;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), 
                 -5px -5px 15px rgba(255, 255, 255, 0.9);
+    margin-left: 10px; /* Space between avatar and message */
+}
+
+.chatbox .message.user .content {
+    background-color: #4CAF50; /* User message color */
+    color: white; /* User message text color */
+    margin-left: auto; /* Align user messages to the right */
 }
 
 .chatbox .message.bot .content {
-    background-color: #d1e7dd;
+    background-color: #d1e7dd; /* Bot message color */
+    color: #333; /* Bot message text color */
 }
 
 .input-container {
