@@ -130,5 +130,7 @@ userInput.addEventListener('keypress', (event) => {
     }
 });
 
-// Show a welcome message on load
-appendMessage("Welcome to Dar's AI BOT! How can I assist you today?", 'Bot', 'bot');
+// Show a welcome message on load only once
+if (messageHistory.length === 0) {
+    appendMessage("Welcome to Dar's AI BOT! How can I assist you today?", 'Bot', 'bot');
+}
