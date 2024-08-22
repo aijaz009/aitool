@@ -36,6 +36,12 @@ body {
     margin-right: 10px;
 }
 
+.chat-name {
+    font-family: 'Pacifico', cursive;
+    color: #4CAF50;
+    font-size: 24px;
+}
+
 .chatbot-content {
     display: flex;
     flex-direction: column;
@@ -101,7 +107,7 @@ button {
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
-    background-color: #007bff;
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
     margin-left: 10px;
@@ -110,5 +116,5 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #45a049;
 }
