@@ -8,7 +8,6 @@ const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 
 let messageHistory = []; // Array to store message history
-let welcomeMessageDisplayed = false; // Flag to track if the welcome message has been displayed
 
 const appendMessage = (message, sender, type) => {
     const messageElement = document.createElement('div');
@@ -132,7 +131,6 @@ userInput.addEventListener('keypress', (event) => {
 });
 
 // Show a welcome message on load only once
-if (!welcomeMessageDisplayed) {
+if (messageHistory.length === 0) {
     appendMessage("Welcome to Dar's AI BOT! How can I assist you today?", 'Bot', 'bot');
-    welcomeMessageDisplayed = true; // Set the flag to true to prevent duplicate messages
 }
