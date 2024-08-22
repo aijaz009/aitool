@@ -132,6 +132,7 @@ userInput.addEventListener('keypress', (event) => {
 });
 
 // Show a welcome message on load only once
-if (messageHistory.length === 0) {
+if (!welcomeMessageDisplayed) {
     appendMessage("Welcome to Dar's AI BOT! How can I assist you today?", 'Bot', 'bot');
+    welcomeMessageDisplayed = true; // Set the flag to true to prevent duplicate messages
 }
