@@ -8,13 +8,14 @@ const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 
 let messageHistory = []; // Array to store message history
+let welcomeMessageDisplayed = false; // Flag to track if the welcome message has been displayed
 
 const appendMessage = (message, sender, type) => {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', type); // Add type class for styling
     messageElement.innerHTML = `
         <div class="avatar">
-            <img src="${type === 'bot' ? 'bot-avatar.png' : 'user-avatar.png'}" alt="${sender} Avatar">
+            <img src="${type === 'bot' ? 'https://via.placeholder.com/50/4CAF50/ffffff?text=Bot' : 'https://via.placeholder.com/50/007bff/ffffff?text=You'}" alt="${sender} Avatar">
         </div>
         <div class="content">${message}</div>
     `;
@@ -131,6 +132,7 @@ userInput.addEventListener('keypress', (event) => {
 });
 
 // Show a welcome message on load only once
-if (messageHistory.length === 0) {
+if (!welcomeMessageDisplayed) {
     appendMessage("Welcome to Dar's AI BOT! How can I assist you today?", 'Bot', 'bot');
+    welcomeMessageDisplayed = true; // Set the flag to true to prevent duplicate messages
 }
